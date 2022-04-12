@@ -5,13 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-
-class Group extends Model
+class Invitation extends Model
 {
     use HasFactory;
-    public $timestamps=true;
-    public function creators()
-    {
-    return $this->belongsToMany(User::class);
-    }
+    protected $fillable = [
+        'email', 'invitation_token', 'registered_at',
+    ];
 }

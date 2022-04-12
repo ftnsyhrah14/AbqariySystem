@@ -17,7 +17,11 @@
   <!-- inject:css --> 
   <link rel="stylesheet" href="{{asset ('template/css/style.css') }}">
   <!-- endinject -->
- 
+ <style>
+     ul {
+  list-style-type: square;
+}
+</style>
 </head>
 <body>
   
@@ -73,32 +77,26 @@
               <span class="menu-title">Dashboard</span>
             </a>
           </li>
-         
+          <li class="nav-item">
+            <a class="nav-link" href="/listcreator">
+              <i class="mdi mdi-account-multiple menu-icon"></i>
+              <span class="menu-title">Creator Management</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/listmember">
+              <i class="mdi mdi-account-multiple menu-icon"></i>
+              <span class="menu-title">Member Management</span>
+            </a>
+          </li>
         </ul>
       </nav>
       <!-- partial -->
       <div class="main-panel">
         <div class="content-wrapper">
-          
-          <div class="row">
-            <div class="col-md-12 grid-margin">
-              <div class="d-flex justify-content-between flex-wrap">
-                <div class="d-flex align-items-end flex-wrap">
-                  <div class="me-md-3 me-xl-5">
-                    <h2>Welcome back,Creator</h2>
-                  </div>
-                  
-                </div>
-                <div class="d-flex justify-content-between align-items-end flex-wrap">
-                
-                  <a href="/groupform"><button class="btn btn-primary mt-2 mt-xl-0">Create New Group</button></a>
-                </div>
-              </div>
-            </div>
-          </div>
-         
-         
-          <form align="center" action ="{{ route('groupsearch') }}" method="GET" class="form-inline center-block">
+  
+        <form align="center" action ="{{ route('membersearch') }}" method="POST" class="form-inline center-block">
+        {{csrf_field()}}
           <div class="input-group ">
           <input type="text" class="form-control"  name="search" size="50" placeholder="Search for ..." required>
             <div class="input-group-btn">
@@ -106,69 +104,69 @@
             </div>
           </div>
         </form>
+     
+         
           <br>
           @include('flash-message')
           <div class="row">
             <div class="col-md-12 stretch-card">
               <div class="card">
                 <div class="card-body">
-                  <p class="card-title">Group List</p>
+                  <p class="card-title">Member list</p>
+                  @if(request()->has('view_deleted'))
+                  &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+                    &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+                    &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+                    <a href="{{ route('post.memberList') }}" class="btn btn-info btn-sm">View All User</a>
+
+                    <a href="{{ route('post.restore_all') }}" class="btn btn-success btn-sm">Restore All</a>
+
+                    @else
+                    &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+                    &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+                    &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+                    &emsp;&emsp;&emsp;
+                    <a href="{{ route('post.memberList', ['view_deleted' => 'DeletedRecords']) }}" class="btn btn-primary btn-sm">View Deleted User</a>
+
+                    @endif
                   <div class="table-responsive">
                     <table id="" class="table">
                       <thead>
                         <tr>
                             <th>No.</th>
-                            <th>Group Name</th>
-                            <th>Date created</th>
+                            <th>Name</th>
+                            <th>Group</th>
                             <th></th>
                             <th></th>
                         </tr>
                       </thead>
-                      @foreach($group->grp as $group)
                       <tbody>
+                        @foreach($user as $user)
+                        @if($user->role == '3')  
                         <tr>
                             <td>{{$loop->iteration}}</td>
-                            <td>{{$group->groupName}}</td>
-                            <td>{{$group->created_at}}</td>
-                            <td><a href="{{url('/groupdetail',$group->id)}}"><button type="button" class="btn btn-primary .btn-{color}">Details</button></a></td>
-                            <td><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModalCenter{{$group->id}}">Edit</button>
-                                        <div class="modal fade" id="exampleModalCenter{{$group->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                                            <div class="modal-dialog modal-dialog-centered" role="document">
-                                              <div class="modal-content">
-                                                <div class="modal-header">
-                                                  <h5 class="modal-title" id="exampleModalLongTitle{{$group->id}}">Edit Group Details</h5>
-                                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                  </button>
-                                                </div>
-                                                <div class="modal-body">
-                                                <form action="/editgroup"  method="post">
-                                                @csrf
-                                                  <div class="form-group">
-                                                      <label for="groupName"  class="col-form-label">Group Name:</label>
-                                                      <input type="text" class="form-control" id="groupName" name="groupName" value="{{$group->groupName}}" >
-                                                      <label for="groupDesc" class="col-form-label">Group Description:</label>
-                                                      <input type="text" class="form-control" id="groupDesc" name="groupDesc" value="{{$group->groupDesc}}" >
-                                                    </div>
-                                                  
-                                                  </div>
-                                                <div class="modal-footer">
-                                                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                  <button type="submit" name="id" class="btn btn-primary me-2" value="{{$group->id}}">Submit</button>
-                                                </div>
-                                                </form>
-                                              </div>
-                                            </div>
-                                          </div>
-                            
-                          
-                          
+                            <td>{{$user->name}}</td>
+                            <td>
+                            @foreach($user->grp as $group)
+                            <ul>
+                            <li>{{$group->groupName}}</li>
+                            </ul> 
+                            @endforeach
                             </td>
-                            <td><a href=""><button type="button" class="btn btn-danger .btn-{color}">Delete</button></a></td>
+                            <td>@if(request()->has('view_deleted'))
+
+                            <a href="{{ route('post.restore', $user->id) }}" class="btn btn-success btn-sm">Restore</a>
+                            @else
+                            <form method="post" action="{{ route('post.delete', $user->id) }}">
+                                                @csrf
+                                                <input type="hidden" name="_method" value="DELETE" />
+                                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                            </form>
+                            @endif</td>
                         </tr>
+                        @endif
+                        @endforeach
                       </tbody>
-   
-                      @endforeach
                     </table>
                   </div>
                 </div>

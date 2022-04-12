@@ -13,12 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
-        $table->string('role');
-        $table->unsignedBigInteger('groupID')->nullable();
-        $table->foreign('groupID')->references('id')->on('groups');
+        Schema::create('joins', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('userID')->constrained('users');
+            $table->foreignId('groupID')->constrained('groups');
+            $table->string('userApprove');
+            $table->timestamps();
         });
-
     }
 
     /**
@@ -28,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('joins');
     }
 };

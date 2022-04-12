@@ -44,10 +44,6 @@
               <span class="nav-profile-name">{{Auth::user()->name}}</span>
             </a>
             <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
-              <a href="/creatorprofile" class="dropdown-item">
-                <i class="mdi mdi-account text-primary"></i>
-                My Profile
-              </a>
               @auth
                 <a href="{{ route('logout') }}" class ="dropdown-item" onclick = "event.preventDefault(); document.getElementById('logout-form').submit();"><i class="mdi mdi-logout text-primary"></i>Log Out
                 <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none">
@@ -73,7 +69,18 @@
               <span class="menu-title">Dashboard</span>
             </a>
           </li>
-         
+          <li class="nav-item">
+            <a class="nav-link" href="/listcreator">
+              <i class="mdi mdi-account-multiple menu-icon"></i>
+              <span class="menu-title">Creator Management</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/listmember">
+              <i class="mdi mdi-account-multiple menu-icon"></i>
+              <span class="menu-title">Member Management</span>
+            </a>
+          </li>
         </ul>
       </nav>
       <!-- partial -->
@@ -85,95 +92,67 @@
               <div class="d-flex justify-content-between flex-wrap">
                 <div class="d-flex align-items-end flex-wrap">
                   <div class="me-md-3 me-xl-5">
-                    <h2>Welcome back,Creator</h2>
+                    <h2>Welcome back, Admin</h2>
                   </div>
                   
                 </div>
-                <div class="d-flex justify-content-between align-items-end flex-wrap">
-                
-                  <a href="/groupform"><button class="btn btn-primary mt-2 mt-xl-0">Create New Group</button></a>
-                </div>
+               
               </div>
             </div>
           </div>
          
-         
-          <form align="center" action ="{{ route('groupsearch') }}" method="GET" class="form-inline center-block">
-          <div class="input-group ">
-          <input type="text" class="form-control"  name="search" size="50" placeholder="Search for ..." required>
-            <div class="input-group-btn">
-              <button type="submit" class="btn btn-secondary"> Search</button>
-            </div>
-          </div>
-        </form>
-          <br>
-          @include('flash-message')
           <div class="row">
-            <div class="col-md-12 stretch-card">
+            <div class="col-md-12 grid-margin stretch-card">
               <div class="card">
-                <div class="card-body">
-                  <p class="card-title">Group List</p>
-                  <div class="table-responsive">
-                    <table id="" class="table">
-                      <thead>
-                        <tr>
-                            <th>No.</th>
-                            <th>Group Name</th>
-                            <th>Date created</th>
-                            <th></th>
-                            <th></th>
-                        </tr>
-                      </thead>
-                      @foreach($group->grp as $group)
-                      <tbody>
-                        <tr>
-                            <td>{{$loop->iteration}}</td>
-                            <td>{{$group->groupName}}</td>
-                            <td>{{$group->created_at}}</td>
-                            <td><a href="{{url('/groupdetail',$group->id)}}"><button type="button" class="btn btn-primary .btn-{color}">Details</button></a></td>
-                            <td><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModalCenter{{$group->id}}">Edit</button>
-                                        <div class="modal fade" id="exampleModalCenter{{$group->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                                            <div class="modal-dialog modal-dialog-centered" role="document">
-                                              <div class="modal-content">
-                                                <div class="modal-header">
-                                                  <h5 class="modal-title" id="exampleModalLongTitle{{$group->id}}">Edit Group Details</h5>
-                                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                  </button>
-                                                </div>
-                                                <div class="modal-body">
-                                                <form action="/editgroup"  method="post">
-                                                @csrf
-                                                  <div class="form-group">
-                                                      <label for="groupName"  class="col-form-label">Group Name:</label>
-                                                      <input type="text" class="form-control" id="groupName" name="groupName" value="{{$group->groupName}}" >
-                                                      <label for="groupDesc" class="col-form-label">Group Description:</label>
-                                                      <input type="text" class="form-control" id="groupDesc" name="groupDesc" value="{{$group->groupDesc}}" >
-                                                    </div>
-                                                  
-                                                  </div>
-                                                <div class="modal-footer">
-                                                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                  <button type="submit" name="id" class="btn btn-primary me-2" value="{{$group->id}}">Submit</button>
-                                                </div>
-                                                </form>
-                                              </div>
-                                            </div>
-                                          </div>
-                            
-                          
-                          
-                            </td>
-                            <td><a href=""><button type="button" class="btn btn-danger .btn-{color}">Delete</button></a></td>
-                        </tr>
-                      </tbody>
-   
-                      @endforeach
-                    </table>
+                <div class="card-body dashboard-tabs p-0">
+                  <ul class="nav nav-tabs px-4" role="tablist">
+                    <li class="nav-item">
+                      <a class="nav-link active" id="overview-tab" data-bs-toggle="tab" href="#overview" role="tab" aria-controls="overview" aria-selected="true">System Summary</a>
+                    </li>
+                  </ul>
+                  <div class="tab-content py-0 px-0">
+                    <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview-tab">
+                      <div class="d-flex flex-wrap justify-content-xl-between">
+                       
+                        <div class="d-flex border-md-right flex-grow-1 align-items-center justify-content-center p-3 item">
+                          <i class="mdi mdi-account-multiple-outline me-3 icon-lg text-danger"></i>
+                          <div class="d-flex flex-column justify-content-around">
+                            <small class="mb-1 text-muted">Total Users</small>
+                            <h3 class="me-2 mb-0">{{$total}}</h3>
+                          </div>
+                        </div>
+                        <div class="d-flex border-md-right flex-grow-1 align-items-center justify-content-center p-3 item">
+                          <i class="mdi mdi-account-multiple-outline me-3 icon-lg text-success"></i>
+                          <div class="d-flex flex-column justify-content-around">
+                            <small class="mb-1 text-muted">Creators</small>
+                            <h3 class="me-2 mb-0">{{$creator}}</h3>
+                          </div>
+                        </div>
+                        <div class="d-flex border-md-right flex-grow-1 align-items-center justify-content-center p-3 item">
+                          <i class="mdi mdi-account-multiple-outline me-3 icon-lg text-warning"></i>
+                          <div class="d-flex flex-column justify-content-around">
+                            <small class="mb-1 text-muted">Members</small>
+                            <h3 class="me-2 mb-0">{{$participant}}</h3>
+                          </div>
+                        </div>
+                        <div class="d-flex py-3 border-md-right flex-grow-1 align-items-center justify-content-center p-3 item">
+                          <i class="mdi mdi-group me-3 icon-lg text-danger"></i>
+                          <div class="d-flex flex-column justify-content-around">
+                            <small class="mb-1 text-muted">Total Groups</small>
+                            <h3 class="me-2 mb-0">{{$group}}</h3>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
                   </div>
                 </div>
               </div>
             </div>
+          </div>
+          <br>
+          <div class="row">
+            
           </div>
         </div>
         <!-- content-wrapper ends -->

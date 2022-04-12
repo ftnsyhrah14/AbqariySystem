@@ -18,8 +18,11 @@
                 <x-jet-label for="email" value="{{ __('Email') }}" />
                 <x-jet-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required />
             </div>
+
+          
+
             <div class="mt-4">
-                <x-jet-label for="Role" value="{{ __('Role') }}" />
+                <x-jet-label for="role" value="{{ __('Role') }}" />
                 <select name="role" id="role" class="block mt-1 w-full" id="role" name="role" :value="old('email')" required  >
                     <option value="" disabled selected hidden>Choose Role</option>
                     <option value="3">Participant</option>

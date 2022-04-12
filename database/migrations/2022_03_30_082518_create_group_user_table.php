@@ -13,12 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('requests', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('userID')->constrained('users');
-            $table->foreignId('groupID')->constrained('groups');
-            $table->string('userApprove');
-            $table->timestamps();
+        Schema::create('group_user', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('user_id')->unsigned();
+            $table->integer('group_id')->unsigned();
         });
     }
 
@@ -29,6 +27,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('requests');
+        Schema::dropIfExists('group_user');
     }
 };

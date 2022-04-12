@@ -5,13 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-
-class Group extends Model
+class Notice extends Model
 {
     use HasFactory;
-    public $timestamps=true;
-    public function creators()
+    public function noti()
     {
-    return $this->belongsToMany(User::class);
+    return $this->belongsTo('App\Models\Group','meetingID');
     }
 }

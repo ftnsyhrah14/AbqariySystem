@@ -8,7 +8,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <link href="https://fonts.googleapis.com/css?family=Raleway:100,200,300,400,500,600,700,800,900&display=swap" rel="stylesheet">
-
+    <link rel="shortcut icon" href="{{asset ('template/images/quran.png') }}" />
     <title>ABQARIY</title>
 
 <!--

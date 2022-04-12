@@ -19,10 +19,10 @@ return new class extends Migration
             $table->string('meetingDate');
             $table->string('meetingTime');
             $table->string('meetingDesc');
-            $table->string('meetingLink');
+            $table->string('meetingLink')->nullable();;
             $table->string('meetingModerator');
-            $table->string('meetingNotes');
-            $table->string('meetingProgress');
+            $table->string('meetingNotes')->nullable();
+            $table->string('meetingProgress')->default("Incomplete");
             $table->timestamps();
         });
     }

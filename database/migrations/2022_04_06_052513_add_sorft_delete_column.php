@@ -13,13 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('groups', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('userID')->constrained('users');
-            $table->string('groupName');
-            $table->string('groupDesc');
-            $table->string('groupLink')->nullable();
-            $table->timestamps();
+        Schema::table('users', function(Blueprint $table){
+            $table->softDeletes();
         });
     }
 
@@ -30,6 +25,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('groups');
+        Schema::table('users', function(Blueprint $table){
+            $table->dropSoftDeletes();
+        });
     }
 };

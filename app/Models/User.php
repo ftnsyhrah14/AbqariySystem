@@ -9,9 +9,11 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class User extends Authenticatable
 {
+    use SoftDeletes;
     use HasApiTokens;
     use HasFactory;
     use HasProfilePhoto;
@@ -27,7 +29,13 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role'
     ];
+    protected $dates = ['deleted_at'];
+    public function grp()
+    {
+    return $this->belongsToMany(Group::class);
+    }
 
     /**
      * The attributes that should be hidden for serialization.

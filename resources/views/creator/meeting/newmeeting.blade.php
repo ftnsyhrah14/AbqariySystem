@@ -5,7 +5,7 @@
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>Majestic Admin</title>
+  <title>Abqariy</title>
   <!-- plugins:css -->
   <link rel="stylesheet" href="{{asset ('template/vendors/mdi/css/materialdesignicons.min.css') }}">
   <link rel="stylesheet" href="{{asset ('template/vendors/base/vendor.bundle.base.css') }}">
@@ -15,7 +15,7 @@
   <!-- inject:css -->
   <link rel="stylesheet" href="{{asset ('template/css/style.css') }}">
   <!-- endinject -->
-  <link rel="shortcut icon" href="{{asset ('template/images/favicon.png') }}" />
+  <link rel="shortcut icon" href="{{asset ('template/images/quran.png') }}" />
 </head>
 
 <body>
@@ -80,45 +80,66 @@
       <div class="main-panel">        
         <div class="content-wrapper">
           <div class="row">
-            
-            <div class="col-12 grid-margin stretch-card">
+          <div class="col-12 grid-margin stretch-card">
               <div class="card">
                 <div class="card-body">
-                  <h4 class="card-title">Create New Group</h4>
+                  <h4 class="card-title">Create New Session</h4>
                   <p class="card-description">
-                    Please fill in all the required information
+                  Please fill in all the required information
                   </p>
-                  <form class="forms-sample" action="/addgroup" method="POST" >
-                  <input type="hidden" class="form-control" name="userID" value="{{Auth::user()->id}}"  >
+                  <form class="forms-sample" action="/addsession" method="POST" enctype="multipart/form-data" >
                   @csrf
+                  @foreach($meet as $meet)
                     <div class="form-group">
-                      <label for="exampleInputName1"> Group Name</label>
-                      <input type="text" class="form-control" name="groupName"  placeholder="Group Name">
+                      <label for="exampleInputName1">Group Name</label>
+                      <input type="hidden" value="{{$meet->id}}" readonly  class="form-control" name="groupID">
+                      <input type="text" value="{{$meet->groupName}}" readonly  class="form-control" name="groupName">
                     </div>
                     <div class="form-group">
-                      <label for="exampleInputEmail3">Group creator</label>
-                      <input type="text" class="form-control" name="groupCreator" value="{{Auth::user()->name}}" readonly >
+                      <label for="exampleInputEmail3">Date</label>
+                      <input type="date" class="form-control" id="meetingDate" name="meetingDate" placeholder="Date">
                     </div>
                     <div class="form-group">
-                      <label for="exampleInputPassword4">Group Description</label>
-                      <input type="text" class="form-control" name="groupDesc" id="exampleInputPassword4" placeholder="Group Description">
+                      <label for="exampleInputPassword4">Time</label>
+                      <input type="time" class="form-control" id="meetingTime" name="meetingTime" placeholder="Time">
                     </div>
-                   
-                    
-                    <button type="submit" class="btn btn-primary me-2" value="{{Auth::user()->id}}">Submit</button>
+                    <div class="form-group">
+                      <label for="exampleInputPassword4">Description</label>
+                      <input type="text" class="form-control" id="meetingDesc" name="meetingDesc" placeholder="Description">
+                    </div>
+                    <div class="form-group">
+                      <label for="exampleInputPassword4">Meeting Link</label>
+                      <input type="text" class="form-control" id="meetingLink" name="meetingLink"placeholder="Meeting Link">
+                    </div>
+                    <div class="form-group">
+                      <label for="exampleInputPassword4">Moderator</label>
+                      <input type="text" class="form-control" id="meetingModerator" name="meetingModerator" placeholder="Moderator">
+                    </div>
+                    <div class="form-group">
+                      <label>File upload</label>
+                      <input type="file" name="meetingNotes" class="file-upload-default">
+                      <div class="input-group col-xs-12">
+                        <input type="text" class="form-control file-upload-info" name="meetingNotes" disabled placeholder="Upload Image">
+                        <span class="input-group-append">
+                          <button class="file-upload-browse btn btn-primary" type="button">Upload</button>
+                        </span>
+                      </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary me-2">Submit</button>
                     <button class="btn btn-light">Cancel</button>
+                    @endforeach
                   </form>
                 </div>
               </div>
             </div>
-        
           </div>
         </div>
         <!-- content-wrapper ends -->
         <!-- partial:../../partials/_footer.html -->
         <footer class="footer">
         <div class="d-sm-flex justify-content-center justify-content-sm-between">
-        <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright Abqariy 2022</span>
+          <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright © <a href="https://www.bootstrapdash.com/" target="_blank">bootstrapdash.com </a>2021</span>
+          <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Only the best <a href="https://www.bootstrapdash.com/" target="_blank"> Bootstrap dashboard  </a> templates</span>
         </div>
         </footer>
         <!-- partial -->
