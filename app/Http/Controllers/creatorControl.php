@@ -172,7 +172,8 @@ class creatorControl extends Controller
         $data = new Meeting;
         $data->groupID = $req->groupID;
         $data->meetingDate = $req->meetingDate;
-        $data->meetingTime = $req->meetingTime;
+        $data->meetingTime = Carbon::parse($req->input('meetingDate') . ' ' . $req->input('meetingTime'));
+        $data->meetingEndTime = Carbon::parse($req->input('meetingDate') . ' ' . $req->input('meetingEndTime'));
         $data->meetingDesc = $req->meetingDesc;
         $data->meetingLink = $req->meetingLink;
         $data->meetingModerator = $req->meetingModerator;
@@ -189,6 +190,7 @@ class creatorControl extends Controller
             'groupName' => $req->groupName,
             'meetingDate' => $req->meetingDate,
             'meetingTime' => $req->meetingTime,
+            'meetingEndTime' => $req->meetingEndTime,
             'meetingDesc' => $req->meetingDesc,
             'meetingLink' => $req->meetingLink,
             'meetingModerator' =>  $req->meetingModerator,
@@ -220,7 +222,7 @@ class creatorControl extends Controller
         $attend->save();
         }
 
-        return back();
+        return redirect('redirect');
     }
 
     public function detailsMeeting($id)

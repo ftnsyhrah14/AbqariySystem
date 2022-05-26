@@ -202,7 +202,7 @@
                                             <thead>
                                                 <tr>
                                                     <th>Date</th>
-                                                    <th>Time</th>
+                                                    <th>Start Time</th>
                                                     <th>Progress</th>
                                                     <th></th>
                                                     <th></th>
@@ -212,8 +212,8 @@
                                             <tbody>
                                             @foreach($meet as $meeting)
                                               <tr>
-                                                  <td>{{$meeting->meetingDate}}</td>
-                                                  <td>{{$meeting->meetingTime}}</td>
+                                                  <td>{{$meeting->meetingDate}}</td>          
+                                                  <td>{{ Carbon\Carbon::parse($meeting->meetingTime)->format('H:i') }} </td>
                                                   <td>{{$meeting->meetingProgress}}</td> 
                                                   <td>
                                                     @foreach($attend as $att)

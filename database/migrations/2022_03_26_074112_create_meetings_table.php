@@ -16,8 +16,9 @@ return new class extends Migration
         Schema::create('meetings', function (Blueprint $table) {
             $table->id();
             $table->foreignId('groupID')->constrained('groups');
-            $table->string('meetingDate');
-            $table->string('meetingTime');
+            $table->date('meetingDate');
+            $table->dateTime('meetingTime');
+            $table->dateTime('meetingEndTime');
             $table->string('meetingDesc');
             $table->string('meetingLink')->nullable();;
             $table->string('meetingModerator');

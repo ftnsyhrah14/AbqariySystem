@@ -5,7 +5,8 @@ I would like to inform that a new meeting for your group, {{$groupName}} has bee
 Meeting details: <br><br>
 
 Date:  {{ $meetingDate }}<br>
-Time:  {{ $meetingTime }}<br>
+Start Time:  {{ $meetingTime }}<br>
+End Time:  {{ $meetingEndTime }}<br>
 Description:  {{ $meetingDesc }}<br>
 Meeting Link:  {{ $meetingLink }}<br>
 Moderator:  {{$meetingModerator}}<br><br>

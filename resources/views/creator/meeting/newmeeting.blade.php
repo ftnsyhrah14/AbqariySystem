@@ -89,17 +89,15 @@
                   @csrf
                   @foreach($meet as $meet)
                   <div class="row">
-                      <div class="col-md-12">
+                      <div class="col-md-6">
                         <div class="form-group row">
-                          <label class="col-sm-2 col-form-label">Group Name</label>
-                          <div class="col-sm-10">
-                          <input type="hidden" value="{{$meet->id}}" readonly  class="form-control" name="groupID">
-                      <input type="text" value="{{$meet->groupName}}" readonly  class="form-control" name="groupName">
+                          <label class="col-sm-3 col-form-label">Group Name</label>
+                          <div class="col-sm-9">
+                            <input type="hidden" value="{{$meet->id}}" readonly  class="form-control" name="groupID">
+                            <input type="text" value="{{$meet->groupName}}" readonly  class="form-control" name="groupName">
                           </div>
                         </div>
                       </div>
-                    </div>
-                    <div class="row">
                       <div class="col-md-6">
                         <div class="form-group row">
                           <label class="col-sm-3 col-form-label">Date</label>
@@ -107,12 +105,22 @@
                             <input type="date" class="form-control" id="meetingDate" name="meetingDate" required />
                           </div>
                         </div>
+                      </div>     
+                    </div>
+                    <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">Start Time</label>
+                          <div class="col-sm-9">
+                            <input type="time" class="form-control" id="meetingTime" name="meetingTime" required/>
+                          </div>
+                        </div>
                       </div>
                       <div class="col-md-6">
                         <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">Time</label>
+                          <label class="col-sm-3 col-form-label">End Time</label>
                           <div class="col-sm-9">
-                            <input type="time" class="form-control" id="meetingTime" name="meetingTime" required/>
+                            <input type="time" class="form-control" id="meetingEndTime" name="meetingEndTime" required/>
                           </div>
                         </div>
                       </div>

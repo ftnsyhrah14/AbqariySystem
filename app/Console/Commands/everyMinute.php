@@ -29,12 +29,9 @@ class everyMinute extends Command
      */
     public function handle()
     {
-        while (true) {
-        if (Carbon::now()->second === 0) {
-            DB::table('meetings')->whereDate('meetingDate', '<', date('Y-m-d H:i:s'))->update(['meetingProgress' => 'Completed'])->everyMinute();;
-        }
-    }
-
-        
+            DB::table('meetings')
+                ->where('meetingEndTime','<',\Carbon\Carbon::now())
+                ->where('meetingProgress', '!=', 'Completed')
+                ->update(['meetingProgress'=>'Completed']);
     }
 }

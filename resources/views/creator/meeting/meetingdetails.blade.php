@@ -197,8 +197,12 @@
                                                                   <td style="width:80%">{{$meeting->meetingDate}}</td>
                                                                 </tr>
                                                                 <tr>
-                                                                  <td style="width:20%">Time:</td>
-                                                                  <td style="width:80%">{{$meeting->meetingTime}}</td>
+                                                                  <td style="width:20%">Start Time:</td>
+                                                                  <td style="width:80%">{{ Carbon\Carbon::parse($meeting->meetingTime)->format('H:i') }} </td>
+                                                                </tr>
+                                                                <tr>
+                                                                  <td style="width:20%">End Time:</td>
+                                                                  <td style="width:80%">{{ Carbon\Carbon::parse($meeting->meetingEndTime)->format('H:i') }} </td>
                                                                 </tr>
                                                                 <tr>
                                                                   <td style="width:20%">Description:</td>
