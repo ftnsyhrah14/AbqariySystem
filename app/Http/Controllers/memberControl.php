@@ -23,6 +23,13 @@ class memberControl extends Controller
         return view("member.profile");
     }
 
+    public function leaveGroup($id)
+    {
+        $data = Group::findOrFail($id);
+        $data->find($id)->members()->detach();
+        return back();
+    }
+
     public function sendRequest($id)
     {
         $user=Auth::user()->id;
@@ -34,12 +41,10 @@ class memberControl extends Controller
         $add->userApprove = 0;
         $add->save();
         
-        $creator = $data->userID;
-        $grp = User::find($creator);
-        $member= User::with('grp')->get();
-        // Mail::to($grp->email)->send(new sendRequestEmail($member));
-        // $group = Group::find($req->groupID);
+        $grp = User::find($data->userID);
+        $member= User::with('request')->get();
         
+
         Mail::send('requestEmail', array(
             'groupName' => $data->groupName,
         ), function($message) use ($grp){
@@ -47,7 +52,14 @@ class memberControl extends Controller
             $message->to($grp->email)->subject('New User Request');
         });
 
-       return redirect('redirect');
+       return back();
+    }
+
+    public function cancelRequest($id)
+    {
+        $data=Join::find($id);
+        $data->delete();
+        return back()->with('success', 'Request Deleted successfully');
     }
 
     public function detailsGroup($id)
@@ -84,6 +96,7 @@ class memberControl extends Controller
     {
         return response()->download(public_path('asset.file/'.$file));
     }
+
 
 
 }

@@ -26,8 +26,7 @@
     <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
       <div class="navbar-brand-wrapper d-flex justify-content-center">
         <div class="navbar-brand-inner-wrapper d-flex justify-content-between align-items-center w-100">  
-          <a class="navbar-brand brand-logo" href="index.html"><img src="{{asset ('template/images/logo.svg') }}" alt="logo"/></a>
-          <a class="navbar-brand brand-logo-mini" href="index.html"><img src="{{asset ('template/images/logo-mini.svg') }}" alt="logo"/></a>
+        <a href="/redirect"><img src="{{asset ('template/images/Abqariy.png') }}" width="100" height="55" alt="logo"/></a>
           <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
             <span class="mdi mdi-sort-variant"></span>
           </button>
@@ -40,7 +39,6 @@
         <ul class="navbar-nav navbar-nav-right">
           <li class="nav-item nav-profile dropdown">
             <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" id="profileDropdown">
-              <img src="{{asset ('template/images/faces/face5.jpg') }}" alt="profile"/>
               <span class="nav-profile-name">{{Auth::user()->name}}</span>
             </a>
             <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
@@ -125,42 +123,27 @@
                             <div class="card">
                                 <div class="card-body">
                                 <p class="card-title">Group Member List</p>
-                                <li class="nav-item nav-search d-none d-lg-block w-100">
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text" id="search">
-                                            <i class="mdi mdi-magnify"></i>
-                                            </span>
-                                        </div>
-                                        <input type="text" class="form-control" placeholder="Search now" aria-label="search" aria-describedby="search">
-                                    </div>
-                                </li>
                                 <br>
                                 <div class="table-responsive">
                                     <table id="" class="table">
                                         <thead>
                                              <tr>
-                                                <th>No.</th>
                                                 <th>Name</th>
                                                 <th>Email</th>
-                                                <th>Date Joined</th>
-                                                <th>Attendance</th>
                                                 <th></th>
                                             </tr>
                                         </thead>
-                                        @foreach($users->creators as $user)
+                                        @foreach($users->members as $user)
                                         <tbody>
                                             <tr>
-                                                <td>{{$loop->iteration}}</td>
+
                                                 <td>{{$user->name}}</td>
                                                 <td>{{$user->email}}</td>
-                                                <td>{{$user->created_at}}</td>
-                                                <td></td>
-                                                <td><a href=""><button type="button" class="btn btn-danger .btn-{color}">Delete</button></a></td>
-                                            </tr> 
+                                                <td><a href="{{url('/kickmember',$user->id)}}"><button type="button" class="btn btn-danger .btn-{color}" onclick="return confirm('Are you sure?')">Delete</button></a></td>
+                                               
+                                              </tr> 
+                                            @endforeach
                                         </tbody>
-                                      
-                                        @endforeach
                                     </table>
                                 </div>
                             </div>
@@ -178,7 +161,6 @@
                                         <table id="" class="table">
                                             <thead>
                                                 <tr>
-                                                    <th>No.</th>
                                                     <th>Name</th>
                                                     <th>Email</th>
                                                     <th></th>
@@ -189,7 +171,6 @@
                                             @if($approve->groupID == $group->id && $approve->userApprove == '0')
                                             <tbody>
                                                 <tr>
-                                                    <td>{{$loop->iteration}}</td>
                                                     <td>{{$approve->user->name}}</td>
                                                     <td>{{$approve->user->email}}</td>
                                                     
@@ -207,56 +188,75 @@
                       </div>
                     </div>
                     <div class="tab-pane fade" id="purchases" role="tabpanel" aria-labelledby="purchases-tab">
-                      <div class="d-flex flex-wrap justify-content-xl-between">
-                          <br>
-                      <div class="row">
-                        <div class="col-md-12 grid-margin">
-                          <div class="d-flex justify-content-between flex-wrap">
-                            <div class="d-flex justify-content-between align-items-end flex-wrap">
-                            @foreach($creator as $g)
-                                <a href="{{url('/sessionform',$g->id )}}"><button class="btn btn-primary mt-2 mt-xl-0">New Session</button></a>
-                            @endforeach
-                            </div>
-                          </div>
-                        </div>
-                      </div>
                       <div class="col-md-12 stretch-card">
                             <div class="card">
                                 <div class="card-body">
-                                <p class="card-title">Session List</p>
                                 <li class="nav-item nav-search d-none d-lg-block w-100">
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text" id="search">
-                                            <i class="mdi mdi-magnify"></i>
-                                            </span>
-                                        </div>
-                                        <input type="text" class="form-control" placeholder="Search now" aria-label="search" aria-describedby="search">
-                                    </div>
+                            @foreach($creator as $g)
+                                <a href="{{url('/sessionform',$g->id )}}"><button class="btn btn-primary mt-2 mt-xl-0">New Session</button></a>
+                            @endforeach
                                 </li>
+                                <br>
                                     <div class="table-responsive">
                                         <table id="" class="table">
                                             <thead>
                                                 <tr>
-                                                    <th>No.</th>
                                                     <th>Date</th>
                                                     <th>Time</th>
-                                                    <th>Moderator</th>
+                                                    <th>Progress</th>
+                                                    <th></th>
                                                     <th></th>
                                                     <th></th>
                                                 </tr>
                                             </thead>
-                                            @foreach($meet as $meet)
                                             <tbody>
-                                                <tr>
-                                                    <td>{{$loop->iteration}}</td>
-                                                    <td>{{$meet->meetingDate}}</td>
-                                                    <td>{{$meet->meetingTime}}</td>
-                                                    <td>{{$meet->meetingModerator}}</td>
-                                                    <td><a href="{{url('/meetingdetails',$meet->id )}}"><button type="button" class="btn btn-primary .btn-{color}">Details</button></a></td>
-                                                    <td><a href=""><button type="button" class="btn btn-danger .btn-{color}">Delete</button></a></td>
-                                                </tr> 
+                                            @foreach($meet as $meeting)
+                                              <tr>
+                                                  <td>{{$meeting->meetingDate}}</td>
+                                                  <td>{{$meeting->meetingTime}}</td>
+                                                  <td>{{$meeting->meetingProgress}}</td> 
+                                                  <td>
+                                                    @foreach($attend as $att)
+                                                    @if($meeting->id == $att->meetingID)
+                                                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModalCenter{{$att->id}}">Update</button>
+                                                      <div class="modal fade" id="exampleModalCenter{{$att->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                                          <div class="modal-dialog modal-dialog-centered" role="document">
+                                                            <div class="modal-content">
+                                                              <div class="modal-header">
+                                                                <h5 class="modal-title" id="exampleModalLongTitle{{$att->id}}">Update Own Attendance</h5>
+                                                                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                                                  <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                              </div>
+                                                              <div class="modal-body">
+                                                              <form action="/updateattendance"  method="post">
+                                                              @csrf
+                                                                <div class="form-group">
+                                                                    <label for="exampleSelectGender" class="col-form-label">Attendance</label>
+                                                                      <select class="form-control" id="userAttendance" name="userAttendance" > 
+                                                                        <option value="" disabled selected hidden>Please choose..</option>
+                                                                        <option value="1">Attend</option>
+                                                                        <option value="2">Not attend</option>
+                                                                      </select>
+                                                                  </div>
+                                                                </div>
+                                                              <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                                <button type="submit" name="id" class="btn btn-primary me-2" value="{{$att->id}}">Submit</button>
+                                                              </div>
+                                                              </form>
+                                                            </div>
+                                                          </div>
+                                                          @endif
+                                                        </div>
+                                                        @endforeach
+                                                      </td>
+                                                    <td><a href="{{url('/meetingdetails',$meeting->id)}}"><button type="button" class="btn btn-primary .btn-{color}">Details</button></a></td>
+                                                    <td><a href="{{url('/delete',$meeting->id)}}"><button type="button" class="btn btn-danger .btn-{color}" onclick="return confirm('Are you sure?')">Delete</button></a></td>
+                                                  </tr> 
+          
                                             </tbody>
+                                         
                                             @endforeach
                                         </table>
                                     </div>

@@ -26,8 +26,7 @@
     <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
       <div class="navbar-brand-wrapper d-flex justify-content-center">
         <div class="navbar-brand-inner-wrapper d-flex justify-content-between align-items-center w-100">  
-          <a class="navbar-brand brand-logo" href="/redirect"><img src="{{asset ('template/images/logo.svg') }}" alt="logo"/></a>
-          <a class="navbar-brand brand-logo-mini" href="/redirect"><img src="{{asset ('template/images/logo-mini.svg') }}" alt="logo"/></a>
+        <a href="/redirect"><img src="{{asset ('template/images/Abqariy.png') }}" width="100" height="55" alt="logo"/></a>
           <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
             <span class="mdi mdi-sort-variant"></span>
           </button>
@@ -40,7 +39,6 @@
         <ul class="navbar-nav navbar-nav-right">
           <li class="nav-item nav-profile dropdown">
             <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" id="profileDropdown">
-              <img src="template/images/faces/face5.jpg" alt="profile"/>
               <span class="nav-profile-name">{{Auth::user()->name}}</span>
             </a>
             <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
@@ -85,7 +83,7 @@
               <div class="d-flex justify-content-between flex-wrap">
                 <div class="d-flex align-items-end flex-wrap">
                   <div class="me-md-3 me-xl-5">
-                    <h2>Welcome back,Member</h2>
+                    <h2>Welcome back, {{Auth::user()->name}}</h2>
                   </div>
                   
                 </div>
@@ -93,7 +91,7 @@
               </div>
             </div>
           </div>
-         
+          @include('flash-message')
           <div class="row">
             <div class="col-md-12 grid-margin stretch-card">
               <div class="card">
@@ -115,36 +113,24 @@
                         <div class="col-md-12 stretch-card">
                           <div class="card">
                             <div class="card-body">
-                              <li class="nav-item nav-search d-none d-lg-block w-100">
-                                <div class="input-group">
-                                  <div class="input-group-prepend">
-                                    <span class="input-group-text" id="search">
-                                      <i class="mdi mdi-magnify"></i>
-                                    </span>
-                                  </div>
-                                  <input type="text" class="form-control" placeholder="Search now" aria-label="search" aria-describedby="search">
-                                </div>
-                              </li>
                               <br>
                               <div class="table-responsive">
                                 <table class="table">
                                   <thead>
                                     <tr>
-                                      <th>No.</th>
                                       <th>Group Name</th>
                                       <th>Group Desc</th>
                                       <th></th>
                                       <th></th>
                                     </tr>
                                   </thead>
-                                  @foreach($user->grp as $user)
+                                  @foreach($user->request as $user)
                                   <tbody>
                                     <tr>
-                                      <td>{{$loop->iteration}}</td>
                                       <td>{{$user->groupName}}</td>
                                       <td>{{$user->groupDesc}}</td>
                                       <td><a href="{{url('/groupdetails',$user->id)}}"><button type="button" class="btn btn-primary .btn-{color}">Details</button></a></td>
-                                      <td><a href="{{url('/join',$user->id)}}"><button type="button" class="btn btn-secondary .btn-{color}">Leave</button></td>
+                                      <td><a href="{{url('/leave',$user->id)}}"><button type="button" class="btn btn-danger .btn-{color}" onclick="return confirm('Are you sure?')">Leave</button></td>
                                     </tr>
                                   </tbody>
                                   @endforeach
@@ -161,22 +147,11 @@
                         <div class="col-md-12 stretch-card">
                           <div class="card">
                             <div class="card-body">
-                              <li class="nav-item nav-search d-none d-lg-block w-100">
-                                <div class="input-group">
-                                  <div class="input-group-prepend">
-                                    <span class="input-group-text" id="search">
-                                      <i class="mdi mdi-magnify"></i>
-                                    </span>
-                                  </div>
-                                  <input type="text" class="form-control" placeholder="Search now" aria-label="search" aria-describedby="search">
-                                </div>
-                              </li>
                               <br>
                               <div class="table-responsive">
                                 <table id="" class="table">
                                   <thead>
                                     <tr>
-                                      <th>No.</th>
                                       <th>Group Name</th>
                                       <th>Group Description</th>
                                       <th></th>
@@ -184,36 +159,19 @@
                                     </tr>
                                   </thead>
                                   <tbody>
-                                    @foreach($exists as $group)
+                                  
+                                    @foreach($nonJoinedGroup as $nonJoinedGroup)
+                                  
+                                  
+                                 
                                     <tr>
-                                      <td>{{$loop->iteration}}</td>
-                                      <td>{{$group->groupName}}</td>
-                                      <td>{{$group->groupDesc}}</td>
-                                      <td>
-                                      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModalCenter{{$group->id}}">Details</button>
-                                      <!-- Modal -->
-                                      <div class="modal fade" id="exampleModalCenter{{$group->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                                        <div class="modal-dialog modal-dialog-centered" role="document">
-                                          <div class="modal-content">
-                                            <div class="modal-header">
-                                              <h5 class="modal-title" id="exampleModalLongTitle">Group Details</h5>
-                                              <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                              </button>
-                                            </div>
-                                            <div class="modal-body">
-                                              <p>Group Name:{{$group->groupName}}</p>
-                                              <p>Group Description : {{$group->groupDesc}}</p>
-                                            </div>
-                                            <div class="modal-footer">
-                                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                            </div>
-                                          </div>
-                                        </div>
-                                      </div>
-                                      </td>
-                                      <td><a href="{{url('/join',$group->id)}}"><button type="button" class="btn btn-secondary .btn-{color}">Join</button></td>
+                                      <td>{{$nonJoinedGroup->groupName}}</td>
+                                      <td>{{$nonJoinedGroup->groupDesc}}</td>
+                                      <td><a href="{{url('/join',$nonJoinedGroup->id)}}"><button type="button" class="btn btn-secondary .btn-{color}">Join</button></td>
                                     </tr>
+                                   
+                               
+                              
                                     @endforeach
                                   </tbody>
                                 </table>
@@ -233,7 +191,6 @@
                                 <table id="" class="table">
                                   <thead>
                                     <tr>
-                                      <th>No.</th>
                                       <th>Group Name</th>
                                       <th>Group Description</th>
                                       <th></th>
@@ -241,11 +198,11 @@
                                     </tr>
                                   </thead>
                                   <tbody>
-                                    @foreach($request as $req)   
+                                    @foreach($requestGroup as $req)   
                                     <tr>
-                                      <td>{{$loop->iteration}}</td>
                                       <td>{{$req->group->groupName}}</td>
                                       <td>{{$req->group->groupDesc}}</td>
+                                      <td><a href ="{{url('/cancelrequest',$req->id)}}"><button type="button" class="btn btn-danger .btn-{color}" onclick="return confirm('Are you sure?')">Cancel</td>
                                     </tr>
                                     @endforeach
                                   </tbody>

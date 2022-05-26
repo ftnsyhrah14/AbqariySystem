@@ -1,0 +1,1 @@
+<img src="{{ asset ('template/images/quran.png') }}" alt="" style="width:85px;">

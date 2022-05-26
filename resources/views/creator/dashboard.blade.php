@@ -26,8 +26,7 @@
     <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
       <div class="navbar-brand-wrapper d-flex justify-content-center">
         <div class="navbar-brand-inner-wrapper d-flex justify-content-between align-items-center w-100">  
-          <a class="navbar-brand brand-logo" href="index.html"><img src="{{asset ('template/images/logo.svg') }}" alt="logo"/></a>
-          <a class="navbar-brand brand-logo-mini" href="index.html"><img src="{{asset ('template/images/logo-mini.svg') }}" alt="logo"/></a>
+          <a href="/redirect"><img src="{{asset ('template/images/Abqariy.png') }}" width="100" height="55" alt="logo"/></a>
           <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
             <span class="mdi mdi-sort-variant"></span>
           </button>
@@ -40,7 +39,7 @@
         <ul class="navbar-nav navbar-nav-right">
           <li class="nav-item nav-profile dropdown">
             <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" id="profileDropdown">
-              <img src="template/images/faces/face5.jpg" alt="profile"/>
+              
               <span class="nav-profile-name">{{Auth::user()->name}}</span>
             </a>
             <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
@@ -85,7 +84,7 @@
               <div class="d-flex justify-content-between flex-wrap">
                 <div class="d-flex align-items-end flex-wrap">
                   <div class="me-md-3 me-xl-5">
-                    <h2>Welcome back,Creator</h2>
+                    <h2>Welcome back, {{Auth::user()->name}}</h2>
                   </div>
                   
                 </div>
@@ -112,7 +111,6 @@
             <div class="col-md-12 stretch-card">
               <div class="card">
                 <div class="card-body">
-                  <p class="card-title">Group List</p>
                   <div class="table-responsive">
                     <table id="" class="table">
                       <thead>
@@ -129,7 +127,7 @@
                         <tr>
                             <td>{{$loop->iteration}}</td>
                             <td>{{$group->groupName}}</td>
-                            <td>{{$group->created_at}}</td>
+                            <td>{{$group->created_at->format('d/m/Y')}}</td>
                             <td><a href="{{url('/groupdetail',$group->id)}}"><button type="button" class="btn btn-primary .btn-{color}">Details</button></a></td>
                             <td><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModalCenter{{$group->id}}">Edit</button>
                                         <div class="modal fade" id="exampleModalCenter{{$group->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -137,7 +135,7 @@
                                               <div class="modal-content">
                                                 <div class="modal-header">
                                                   <h5 class="modal-title" id="exampleModalLongTitle{{$group->id}}">Edit Group Details</h5>
-                                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                  <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                                                     <span aria-hidden="true">&times;</span>
                                                   </button>
                                                 </div>
@@ -160,11 +158,8 @@
                                               </div>
                                             </div>
                                           </div>
-                            
-                          
-                          
                             </td>
-                            <td><a href=""><button type="button" class="btn btn-danger .btn-{color}">Delete</button></a></td>
+                         
                         </tr>
                       </tbody>
    

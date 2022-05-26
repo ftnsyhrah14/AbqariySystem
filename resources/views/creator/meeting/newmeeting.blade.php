@@ -24,8 +24,7 @@
     <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
       <div class="navbar-brand-wrapper d-flex justify-content-center">
         <div class="navbar-brand-inner-wrapper d-flex justify-content-between align-items-center w-100">  
-          <a class="navbar-brand brand-logo" href="../../index.html"><img src="{{asset ('template/images/logo.svg') }}" alt="logo"/></a>
-          <a class="navbar-brand brand-logo-mini" href="../../index.html"><img src="{{asset ('template/images/logo-mini.svg') }}" alt="logo"/></a>
+        <a href="/redirect"><img src="{{asset ('template/images/Abqariy.png') }}" width="100" height="55" alt="logo"/></a>
           <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
             <span class="mdi mdi-sort-variant"></span>
           </button>
@@ -40,7 +39,6 @@
           </li>
           <li class="nav-item nav-profile dropdown">
             <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" id="profileDropdown">
-              <img src="{{asset ('template/images/faces/face5.jpg') }}" alt="profile"/>
               <span class="nav-profile-name">{{Auth::user()->name}}</span>
             </a>
             <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
@@ -90,43 +88,82 @@
                   <form class="forms-sample" action="/addsession" method="POST" enctype="multipart/form-data" >
                   @csrf
                   @foreach($meet as $meet)
-                    <div class="form-group">
-                      <label for="exampleInputName1">Group Name</label>
-                      <input type="hidden" value="{{$meet->id}}" readonly  class="form-control" name="groupID">
+                  <div class="row">
+                      <div class="col-md-12">
+                        <div class="form-group row">
+                          <label class="col-sm-2 col-form-label">Group Name</label>
+                          <div class="col-sm-10">
+                          <input type="hidden" value="{{$meet->id}}" readonly  class="form-control" name="groupID">
                       <input type="text" value="{{$meet->groupName}}" readonly  class="form-control" name="groupName">
-                    </div>
-                    <div class="form-group">
-                      <label for="exampleInputEmail3">Date</label>
-                      <input type="date" class="form-control" id="meetingDate" name="meetingDate" placeholder="Date">
-                    </div>
-                    <div class="form-group">
-                      <label for="exampleInputPassword4">Time</label>
-                      <input type="time" class="form-control" id="meetingTime" name="meetingTime" placeholder="Time">
-                    </div>
-                    <div class="form-group">
-                      <label for="exampleInputPassword4">Description</label>
-                      <input type="text" class="form-control" id="meetingDesc" name="meetingDesc" placeholder="Description">
-                    </div>
-                    <div class="form-group">
-                      <label for="exampleInputPassword4">Meeting Link</label>
-                      <input type="text" class="form-control" id="meetingLink" name="meetingLink"placeholder="Meeting Link">
-                    </div>
-                    <div class="form-group">
-                      <label for="exampleInputPassword4">Moderator</label>
-                      <input type="text" class="form-control" id="meetingModerator" name="meetingModerator" placeholder="Moderator">
-                    </div>
-                    <div class="form-group">
-                      <label>File upload</label>
-                      <input type="file" name="meetingNotes" class="file-upload-default">
-                      <div class="input-group col-xs-12">
-                        <input type="text" class="form-control file-upload-info" name="meetingNotes" disabled placeholder="Upload Image">
-                        <span class="input-group-append">
-                          <button class="file-upload-browse btn btn-primary" type="button">Upload</button>
-                        </span>
+                          </div>
+                        </div>
                       </div>
                     </div>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">Date</label>
+                          <div class="col-sm-9">
+                            <input type="date" class="form-control" id="meetingDate" name="meetingDate" required />
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">Time</label>
+                          <div class="col-sm-9">
+                            <input type="time" class="form-control" id="meetingTime" name="meetingTime" required/>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">Description</label>
+                          <div class="col-sm-9">
+                            <input type="text" class="form-control" id="meetingDesc" name="meetingDesc" />
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">Notes</label>
+                          <input type="file" name="meetingNotes" class="file-upload-default">
+                            <div class="col-sm-9">
+                              <input type="file" class="form-control file-upload-info" name="meetingNotes"  placeholder="Upload Image">
+
+                              </span>
+                            </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">Meeting Link</label>
+                          <div class="col-sm-9">
+                            <input type="text" class="form-control" id="meetinglink" name="meetingLink" />
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">Moderator</label>
+                          <div class="col-sm-9">
+                          <select class="form-control" id="meetingModerator"  name="meetingModerator" >
+                        @foreach($users->members as $user)
+                        <option value="" disabled selected hidden>Choose Moderator</option>
+                      <option value="{{$user->name}}">{{$user->name}}</option>
+                    @endforeach
+                        </select>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
                     <button type="submit" class="btn btn-primary me-2">Submit</button>
-                    <button class="btn btn-light">Cancel</button>
+                    <button class="btn btn-light" onclick="window.location='{{url()->previous()}}';return false;">Cancel</button>
                     @endforeach
                   </form>
                 </div>
@@ -138,8 +175,8 @@
         <!-- partial:../../partials/_footer.html -->
         <footer class="footer">
         <div class="d-sm-flex justify-content-center justify-content-sm-between">
-          <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright © <a href="https://www.bootstrapdash.com/" target="_blank">bootstrapdash.com </a>2021</span>
-          <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Only the best <a href="https://www.bootstrapdash.com/" target="_blank"> Bootstrap dashboard  </a> templates</span>
+          <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright Abqariy 2022</span>
+
         </div>
         </footer>
         <!-- partial -->

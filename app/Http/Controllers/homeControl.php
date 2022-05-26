@@ -20,7 +20,7 @@ class homeControl extends Controller
     {
         return view("home");
     }
-    public function redirectFunct()
+    public function redirectFunct(Request $request)
     {
         $role=Auth::user()->role;
         $userid=Auth::user()->id;
@@ -38,23 +38,27 @@ class homeControl extends Controller
         if($role=='2')
         {
             $group=User::find(Auth::user()->id);
-            return view('creator.dashboard',['group'=>$group]);
+            if($request->has('view_deleted'))
+        {
+            $group = User::onlyTrashed()->find(Auth::user()->id);
+        }
+        return view('creator.dashboard',['group'=>$group]);
+            
 
         }
         if($role=='3')
         {
             $user = User::find(Auth::user()->id);
-            $groups=Group::with('creators');
-           
-            $exists = Group::whereDoesntHave('creators', function ($query) {
+
+            $nonJoinedGroup = Group::whereDoesntHave('members', function ($query) {
                 $query->where('user_id', '=', Auth::user()->id);
             })->get();
 
-            $request = Join::where('userApprove','=','0')->where('userID',$userid)->get();
-
-           
-           
-            return view('member.dashboard',['user'=>$user,'groups'=>$groups,'exists'=>$exists,'request'=>$request]);
+            
+            $requestGroup = Join::where('userApprove','=','0')->where('userID',Auth::user()->id)->get();
+            
+            
+            return view('member.dashboard',['user'=>$user,'nonJoinedGroup'=>$nonJoinedGroup,'requestGroup'=>$requestGroup]);
         }
 
     }

@@ -18,7 +18,6 @@ return new class extends Migration
             $table->foreignId('groupID')->constrained('groups');
             $table->foreignId('meetingID')->constrained('meetings');
             $table->foreignId('userID')->constrained('users');
-            $table->string('userFeedback')->nullable();
             $table->string('userAttendance')->default('2');
             $table->timestamps();
         });

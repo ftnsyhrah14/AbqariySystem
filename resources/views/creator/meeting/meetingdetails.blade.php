@@ -26,8 +26,7 @@
     <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
       <div class="navbar-brand-wrapper d-flex justify-content-center">
         <div class="navbar-brand-inner-wrapper d-flex justify-content-between align-items-center w-100">  
-          <a class="navbar-brand brand-logo" href="index.html"><img src="{{asset ('template/images/logo.svg') }}" alt="logo"/></a>
-          <a class="navbar-brand brand-logo-mini" href="index.html"><img src="{{asset ('template/images/logo-mini.svg') }}" alt="logo"/></a>
+        <a href="/redirect"><img src="{{asset ('template/images/Abqariy.png') }}" width="100" height="55" alt="logo"/></a>
           <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
             <span class="mdi mdi-sort-variant"></span>
           </button>
@@ -40,7 +39,6 @@
         <ul class="navbar-nav navbar-nav-right">
           <li class="nav-item nav-profile dropdown">
             <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" id="profileDropdown">
-              <img src="{{asset ('template/images/faces/face5.jpg') }}" alt="profile"/>
               <span class="nav-profile-name">{{Auth::user()->name}}</span>
             </a>
             <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
@@ -79,14 +77,7 @@
       <!-- partial -->
       <div class="main-panel">
         <div class="content-wrapper">
-          
-          <div class="row">
-            <div class="col-md-12 grid-margin">
-              <div class="d-flex justify-content-between flex-wrap">
-                <div class="d-flex align-items-end flex-wrap">
-        </div>
-        </div>
-          <div class="row">
+        <div class="row">
             <div class="col-md-12 grid-margin stretch-card">
               <div class="card">
                 <div class="card-body dashboard-tabs p-0">
@@ -97,151 +88,231 @@
                     <li class="nav-item">
                       <a class="nav-link" id="sales-tab" data-bs-toggle="tab" href="#sales" role="tab" aria-controls="sales" aria-selected="false">Attendance</a>
                     </li>
+                   
                   </ul>
                   <div class="tab-content py-0 px-0">
                     <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview-tab">
-                      <div class="d-flex flex-wrap justify-content-xl-between">
-                        <br>
                       <div class="row">
-                        <div class="col-md-12 grid-margin">
-                          <div class="d-flex justify-content-between flex-wrap">
-                            <div class="d-flex justify-content-between align-items-end flex-wrap">
-                           
-                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModalCenter{{$meeting->id}}">Update</button>
-                                        <div class="modal fade" id="exampleModalCenter{{$meeting->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div class="col-md-12 stretch-card">
+                          <div class="card">
+                            <div class="card-body">
+                            <li class="nav-item nav-search d-none d-lg-block w-100">
+                            
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModalCenter{{$meeting->id}}">Edit</button>
+                                                      <div class="modal fade" id="exampleModalCenter{{$meeting->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                                          <div class="modal-dialog modal-dialog-centered" role="document">
+                                                            <div class="modal-content">
+                                                              <div class="modal-header">
+                                                                <h5 class="modal-title" id="exampleModalLongTitle{{$meeting->id}}">Session Details</h5>
+                                                                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                                                  <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                              </div>
+                                                              <div class="modal-body">
+                                                              <form action="/editmeeting"  method="post">
+                                                              @csrf
+                                                                <div class="row">
+                                                                  <div class="col-md-6">
+                                                                    <div class="form-group row">
+                                                                      <label class="col-sm-3 col-form-label">Date</label>
+                                                                      <div class="col-sm-9">
+                                                                        <input type="date" class="form-control" id="meetingDate" name="meetingDate" value="{{$meeting->meetingDate}}"/>
+                                                                      </div>
+                                                                    </div>
+                                                                  </div>
+                                                                  <div class="col-md-6">
+                                                                    <div class="form-group row">
+                                                                      <label class="col-sm-3 col-form-label">Time</label>
+                                                                      <div class="col-sm-9">
+                                                                        <input type="time" class="form-control" id="meetingTime" name="meetingTime" value="{{$meeting->meetingTime}}"/>
+                                                                      </div>
+                                                                    </div>
+                                                                  </div>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                  <label for="exampleInputEmail3">Description</label>
+                                                                  <input type="text" class="form-control" id="meetingDesc" name="meetingDesc" value="{{$meeting->meetingDesc}}" >
+                                                                </div>
+
+                                                                <div class="form-group">
+                                                                  <label for="exampleInputEmail3">Meeting Link</label>
+                                                                  <input type="text" class="form-control" id="meetingLink" name="meetingLink" value="{{$meeting->meetingLink}}" >
+                                                                </div>
+                                                                <div class="form-group">
+                                                                  <label for="exampleInputEmail3">Meeting Moderator</label>
+                                                                  <?php $options=$meeting->meetingModerator ?>
+                                                                  <select class="form-control" id="meetingModerator"  name="meetingModerator" >
+                                                                  @foreach($users->members as $u)
+                                                                      
+                                                                      <option value="{{$u->name}}" {{$u->name == $options  ? 'selected' : ''}}>{{$u->name}}</option>
+                                                                    @endforeach
+                                                                      </select>
+                                                                </div>
+                                                                </div>
+                                                              <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                                <button type="submit" name="id" class="btn btn-primary me-2" value="{{$meeting->id}}">Submit</button>
+                                                              </div>
+                                                              </form>
+                                                            </div>
+                                                          </div>
+                                                        </div>
+
+                                                        <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#exampleModalCente{{$meeting->id}}">Upload new note</button>
+                                                        <div class="modal fade" id="exampleModalCente{{$meeting->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                                          <div class="modal-dialog modal-dialog-centered" role="document">
+                                                            <div class="modal-content">
+                                                              <div class="modal-header">
+                                                                <h5 class="modal-title" id="exampleModalLongTitle{{$meeting->id}}">Upload new notes</h5>
+                                                                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                                                  <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                              </div>
+                                                              <div class="modal-body">
+                                                              <form action="/uploadnewnote"  method="post" enctype="multipart/form-data">
+                                                              @csrf
+                                                              <div class="form-group">
+                                                                  <label>File upload</label>
+                                                                  <input type="file" name="meetingNotes" class="file-upload-default">
+                                                                  <div class="input-group col-xs-12">
+                                                                    <input type="file" class="form-control file-upload-info" name="meetingNotes"  placeholder="Upload Notes">
+                                                                  </div>
+                                                                </div>  
+                                                                </div>
+                                                              <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                                <button type="submit" name="id" class="btn btn-primary me-2" value="{{$meeting->id}}">Submit</button>
+                                                              </div>
+                                                              </form>
+                                                            </div>
+                                                          </div>
+                                                        </div>
+                                                        </li>
+                                                          <br>
+                                                          <div class="table-responsive">
+                                                          <table class="table">                                 
+                                                              <tbody>
+                                                                <tr>
+                                                                  <td style="width:20%">Date:</td>
+                                                                  <td style="width:80%">{{$meeting->meetingDate}}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                  <td style="width:20%">Time:</td>
+                                                                  <td style="width:80%">{{$meeting->meetingTime}}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                  <td style="width:20%">Description:</td>
+                                                                  <td style="width:80%">{{$meeting->meetingDesc}}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                  <td style="width:20%">Link meeting:</td>
+                                                                  <td style="width:80%"><a href ='{{$meeting->meetingLink}}' target="_blank">{{$meeting->meetingLink}}</a></td>
+                                                                </tr>
+                                                                <tr>
+                                                                  <td style="width:20%">Moderator:</td>
+                                                                  <td style="width:80%">{{$meeting->meetingModerator}}</td>
+                                                                <tr>
+                                                                  <td style="width:20%">Progress:</td>
+                                                                  <td style="width:80%">{{$meeting->meetingProgress}}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                  <td style="width:20%">Notes:</td>
+                                                                  <td style="width:80%"><a href ="{{url('/download',$meeting->meetingNotes)}}">Download</a></td>
+                                                                </tr>
+                                                              </tbody>
+                                                            </table>
+                                                          </div>
+                                                        </div>
+                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                </div>
+          
+                    <div class="tab-pane fade" id="sales" role="tabpanel" aria-labelledby="sales-tab">
+                      <div class="row">
+                        <div class="col-md-12 stretch-card">
+                          <div class="card">
+                            <div class="card-body">
+                            
+                              <br>
+                              <div class="table-responsive">
+                              <table class="table">
+                                    <thead>
+                                      <tr>
+                                        <th>Name</th>
+                                        <th>Attendance</th>
+                                      </tr>
+                                      </thead>
+                                      @foreach($user as $mem)
+                                      <tbody>
+                                        <tr>
+                                          <td>{{$mem->member->name}}</td>
+                                          @if($mem->userAttendance == '1')
+                                          <td>Attend</td>
+                                          @else($mem->userAttendance == '2')
+                                          <td>Not Attend</td>
+                                          @endif
+                                          <td>
+                                          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#xampleModalCenter{{$mem->id}}">
+                                            Edit
+                                          </button>
+
+                                          <!-- Modal -->
+                                          <div class="modal fade" id="xampleModalCenter{{$mem->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                                             <div class="modal-dialog modal-dialog-centered" role="document">
                                               <div class="modal-content">
                                                 <div class="modal-header">
-                                                  <h5 class="modal-title" id="exampleModalLongTitle{{$meeting->id}}">Edit Meeting Details</h5>
+                                                  <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
                                                   <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                                                     <span aria-hidden="true">&times;</span>
                                                   </button>
                                                 </div>
                                                 <div class="modal-body">
-                                                <form action="/editmeeting"  method="post" enctype="multipart/form-data">
-                                                @csrf
-                                                  <div class="form-group">
-                                                      <label for="meetingDate"  class="col-form-label">Date:</label>
-                                                      <input type="date" class="form-control" id="meetingDate" name="meetingDate" value="{{$meeting->meetingDate}}" >
-                                                      <label for="meetingTime" class="col-form-label">Time:</label>
-                                                      <input type="time" class="form-control" id="meetingTime" name="meetingTime" value="{{$meeting->meetingTime}}" >
-                                                      <label for="meetingDesc" class="col-form-label">Description:</label>
-                                                      <input type="text" class="form-control" id="meetingTime" name="meetingDesc" value="{{$meeting->meetingDesc}}" >
-                                                      <label for="meetingModerator" class="col-form-label">Moderator:</label>
-                                                      <input type="text" class="form-control" id="meetingModerator" name="meetingModerator" value="{{$meeting->meetingModerator}}" >
-                                                      <label for="meetingLink" class="col-form-label">Meeting Link:</label>
-                                                      <input type="text" class="form-control" id="meetingLink" name="meetingLink" value="{{$meeting->meetingLink}}" >
-                                                      <!-- <label for="meetingNotes" class="col-form-label">Meeting Notes:</label>
-                                                      <input type="file" class="form-control" id="meetingLink" name="meetingNotes" value="{{$meeting->meetingNotes}}" > -->
-                                                    </div>
-                                                  
-                                                  </div>
-                                                <div class="modal-footer">
-                                                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                  <button type="submit" name="id" class="btn btn-primary me-2" value="{{$meeting->id}}">Submit</button>
+                                                <form action="/updateattendance"  method="post">
+                                                              @csrf
+                                                                <div class="form-group">
+                                                                    <label for="exampleSelectGender" class="col-form-label">Attendance</label>
+                                                                      <select class="form-control" id="userAttendance" name="userAttendance" > 
+                                                                        <option value="" disabled selected hidden>Please choose..</option>
+                                                                        <option value="1">Attend</option>
+                                                                        <option value="2">Not attend</option>
+                                                                      </select>
+                                                                  </div>
+                                                                </div>
+                                                              <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                                <button type="submit" name="id" class="btn btn-primary me-2" value="{{$mem->id}}">Submit</button>
+                                                              </div>
+                                                              </form>
                                                 </div>
-                                                </form>
+                                                </div>
                                               </div>
                                             </div>
                                           </div>
-                            
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                        <div class="col-lg-12 grid-margin stretch-card">
-                          <div class="card">
-                            <div class="card-body">
-                              <h4 class="card-title">Meeting Details</h4>
-                              <div class="table-responsive">
-                                <table class="table">                                 
-                                  <tbody>
-                                    <tr>
-                                      <td style="width:20%">Date:</td>
-                                      <td style="width:80%">{{$meeting->meetingDate}}</td>
-                                    </tr>
-                                    <tr>
-                                      <td style="width:20%">Time:</td>
-                                      <td style="width:80%">{{$meeting->meetingTime}}</td>
-                                    </tr>
-                                    <tr>
-                                      <td style="width:20%">Description:</td>
-                                      <td style="width:80%">{{$meeting->meetingDesc}}</td>
-                                    </tr>
-                                    <tr>
-                                      <td style="width:20%">Link meeting:</td>
-                                      <td style="width:80%"><a href ='{{$meeting->meetingLink}}' target="_blank">{{$meeting->meetingLink}}</a></td>
-                                    </tr>
-                                    <tr>
-                                      <td style="width:20%">Moderator:</td>
-                                      <td style="width:80%">{{$meeting->meetingModerator}}</td>
-                                    <tr>
-                                      <td style="width:20%">Progress:</td>
-                                      <td style="width:80%">{{$meeting->meetingProgress}}</td>
-                                    </tr>
-                                    <tr>
-                                      <td style="width:20%">Notes:</td>
-                                      <td style="width:80%"><a href ="{{url('/download',$meeting->meetingNotes)}}">Download</a></td>
-                                    </tr>
-                                  </tbody>
-                                  
-                                </table>
+                                          </td>
+                                        </tr>
+                                      </tbody>
+                                      @endforeach
+                                    </table>
                               </div>
                             </div>
                           </div>
                         </div>
                       </div>
                     </div>
-                    <div class="tab-pane fade" id="sales" role="tabpanel" aria-labelledby="sales-tab">
-                      <div class="d-flex flex-wrap justify-content-xl-between">
-                        <div class="col-lg-12 grid-margin stretch-card">
-                          <div class="card">
-                            <div class="card-body">
-                              <h4 class="card-title">Member Attendance</h4>
-                                <div class="table-responsive">
-                                  <table class="table">
-                                      <thead>
-                                        <tr>
-                                            <th>No.</th>
-                                            <th>Name</th>
-                                            <th>Attendance</th>
-                                            <th>Feedback</th>
-                                        </tr>
-                                      </thead>
-                                      @foreach($user as $mem)
-                                      <tbody>
-                                        <tr>
-                                            <td>{{$mem->userID}}</td>
-                                            <td>{{$mem->member->name}}</td>
-                                            @if($mem->userAttendance == '1')
-                                            <td>Attend</td>
-                                            @else($mem->userAttendance == '2')
-                                            <td>Not Attend</td>
-                                            @endif
-                                            @if($mem->userFeedback == NULL)
-                                            <td>No feedback</td>
-                                            @else
-                                            <td>{{$mem->userFeedback}}</td>
-                                            @endif
-                                        </tr>
-                                      </tbody>
-                  
-                                      @endforeach
-                                    </table>
-                                  </table>
-                                </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+          
+
                   </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
         <!-- content-wrapper ends -->
         <!-- partial:partials/_footer.html -->
         <footer class="footer">
         <div class="d-sm-flex justify-content-center justify-content-sm-between">
           <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright Abqariy 2022</span>
-
         </div>
         </footer>
         <!-- partial -->

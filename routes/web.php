@@ -26,9 +26,10 @@ Route::get('/', function () {
 });
 Route::get("/redirect",[homeControl::class,"redirectFunct"]);
 
-
+Route::get("/redirect",[homeControl::class,"redirectFunct"]);
 Route::group(['middleware' => ['prevent-back-history', 'auth']],function(){
-    Route::get("/redirect",[homeControl::class,"redirectFunct"]);
+    
+Route::get("/redirect",[homeControl::class,"redirectFunct"])->name('post.groupList');
 
 //admin management
 Route::get("/listcreator",[adminControl::class,"creatorList"]);
@@ -44,10 +45,14 @@ Route::get('post/restore/one/{id}', [adminControl::class, 'restore'])->name('pos
 Route::get('post/restore_all', [adminControl::class, 'restore_all'])->name('post.restore_all');
 
 //creator management
+
 Route::get("/creatorprofile",[creatorControl::class,"creatorProfile"]);
 Route::get("/groupform",[creatorControl::class,"newGroup"]);
 Route::get('/groupSearch', [creatorControl::class,"groupSearch"])->name('groupsearch');
 Route::get("/groupdetail/{id}",[creatorControl::class,"detailsGroup"]);
+Route::get("/kickmember/{id}",[creatorControl::class,"kickMember"]);
+Route::get("/updattendance/{id}",[creatorControl::class,"updateAttendance"]);
+Route::POST("/updateattendance",[creatorControl::class,"editAttendance"]);
 Route::POST("/editgroup",[creatorControl::class,"editGroup"]);
 Route::POST("/addgroup",[creatorControl::class,"addgroup"]);
 Route::get("insert/{userID}/{groupID}",[creatorControl::class,"approveMem"]);
@@ -55,14 +60,18 @@ Route::get("reject/{userID}/{groupID}",[creatorControl::class,"rejectMem"]);
 Route::get("/sessionform/{id}",[creatorControl::class,"newSession"]);
 Route::POST("/addsession",[creatorControl::class,"addsession"]);
 Route::get("/meetingdetails/{id}",[creatorControl::class,"detailsMeeting"]);
+Route::get("/delete/{id}",[creatorControl::class,"deleteSession"]);
 Route::POST("/editmeeting",[creatorControl::class,"editMeeting"]);
+Route::POST("/uploadnewnote",[creatorControl::class,"uploadNewnote"]);
 Route::get("/download/{file}",[creatorControl::class,"download"]);
 
 //membermanagement
 Route::get("/memberprofile",[memberControl::class,"memberProfile"]);
+Route::get("/leave/{id}",[memberControl::class,"leaveGroup"]);
 Route::get("/join/{id}",[memberControl::class,"sendRequest"]);
 Route::get("/groupdetails/{id}",[memberControl::class,"detailsGroup"]);
 Route::get("/updattendance/{id}",[memberControl::class,"updateAttendance"]);
+Route::get("/cancelrequest/{id}",[memberControl::class,"cancelRequest"]);
 Route::POST("/updateattend",[memberControl::class,"editAttendance"]);
 Route::get("/downloads/{file}",[creatorControl::class,"download"]);
 

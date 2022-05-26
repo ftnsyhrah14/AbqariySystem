@@ -34,9 +34,15 @@ class User extends Authenticatable
     protected $dates = ['deleted_at'];
     public function grp()
     {
-    return $this->belongsToMany(Group::class);
+        return $this->belongsToMany(Group::class);
     }
 
+    
+    public function request()
+    {
+        return $this->belongsToMany(Group::class, 'user_group');
+    }
+    
     /**
      * The attributes that should be hidden for serialization.
      *

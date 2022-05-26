@@ -28,8 +28,7 @@
     <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
       <div class="navbar-brand-wrapper d-flex justify-content-center">
         <div class="navbar-brand-inner-wrapper d-flex justify-content-between align-items-center w-100">  
-          <a class="navbar-brand brand-logo" href="/redirect"><img src="{{asset ('template/images/logo.svg') }}" alt="logo"/></a>
-          <a class="navbar-brand brand-logo-mini" href="/redirect"><img src="{{asset ('template/images/logo-mini.svg') }}" alt="logo"/></a>
+        <a href="/redirect"><img src="{{asset ('template/images/Abqariy.png') }}" width="100" height="55" alt="logo"/></a>
           <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
             <span class="mdi mdi-sort-variant"></span>
           </button>
@@ -42,7 +41,6 @@
         <ul class="navbar-nav navbar-nav-right">
           <li class="nav-item nav-profile dropdown">
             <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" id="profileDropdown">
-              <img src="{{asset ('template/images/faces/face5.jpg') }}" alt="profile"/>
               <span class="nav-profile-name">{{Auth::user()->name}}</span>
             </a>
             <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
@@ -115,9 +113,6 @@
                     <li class="nav-item">
                       <a class="nav-link" id="purchases-tab" data-bs-toggle="tab" href="#purchases" role="tab" aria-controls="purchases" aria-selected="false">Attendance</a>
                     </li>
-                    <li class="nav-item">
-                      <a class="nav-link" id="sales-tab" data-bs-toggle="tab" href="#sales" role="tab" aria-controls="sales" aria-selected="false">Notice</a>
-                    </li>
                   </ul>
                   <div class="tab-content py-0 px-0">
                     <!-- Session -->
@@ -129,16 +124,6 @@
                         <div class="col-md-12 stretch-card">
                           <div class="card">
                             <div class="card-body">
-                              <li class="nav-item nav-search d-none d-lg-block w-100">
-                                <div class="input-group">
-                                  <div class="input-group-prepend">
-                                    <span class="input-group-text" id="search">
-                                      <i class="mdi mdi-magnify"></i>
-                                    </span>
-                                  </div>
-                                    <input type="text" class="form-control" placeholder="Search now" aria-label="search" aria-describedby="search">
-                                </div>
-                              </li>
                               <br>
                               <div class="table-responsive">
                               <table id="" class="table">
@@ -147,7 +132,6 @@
                                         <th>No.</th>
                                         <th>Date</th>
                                         <th>Time</th>
-                                        <th>Moderator</th>
                                         <th>Attendance</td>
                                         <th></th>
                                         <th>Notes</th>
@@ -157,10 +141,9 @@
                                   <tbody>
                                   @foreach($att as $atten)
                                     <tr>
-                                        <td>{{$atten->id}}</td>
+                                        <td>{{$loop->iteration}}</td>
                                         <td>{{$atten->attend->meetingDate}}</td>
                                         <td>{{$atten->attend->meetingTime}}</td>
-                                        <td>{{$atten->attend->meetingModerator}}</td>
                                         @if($atten->userAttendance == '1')
                                         <td>Attend</td>
                                         @else($userAttendance == '2')
@@ -172,7 +155,7 @@
                                               <div class="modal-content">
                                                 <div class="modal-header">
                                                   <h5 class="modal-title" id="exampleModalLongTitle{{$atten->id}}">Session Details</h5>
-                                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                  <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                                                     <span aria-hidden="true">&times;</span>
                                                   </button>
                                                 </div>
@@ -180,10 +163,6 @@
                                                 <form action="/updateattend"  method="post">
                                                 @csrf
                                                   <div class="form-group">
-                                                      <label for="meetingDate"  class="col-form-label">Date:</label>
-                                                      <input type="text" class="form-control" id="meetingDate" value="{{$atten->attend->meetingDate}}" readonly>
-                                                      <label for="meetingTime" class="col-form-label">Time:</label>
-                                                      <input type="text" class="form-control" id="meetingTime" value="{{$atten->attend->meetingTime}}" readonly>
                                                       <label for="meetingTime" class="col-form-label">Description:</label>
                                                       <input type="text" class="form-control" id="meetingTime" value="{{$atten->attend->meetingDesc}}" readonly>
                                                       <label for="meetingTime" class="col-form-label">Moderator:</label>
@@ -206,51 +185,16 @@
                                             </div>
                                           </div>
                                           </td>
-                                          <td><a href ="{{url('/downloads',$atten->attend->meetingNotes)}}"><button type="button" class="btn btn-secondary .btn-{color} mdi mdi-download">&ensp;Download</td>
-                                          <td><a href ='{{$atten->attend->meetingLink}}' target="_blank"><button type="button" class="btn btn-secondary .btn-{color}">Join Meeting</td>
+                                          <td><a href ="{{url('/downloads',$atten->attend->meetingNotes)}}"><button type="button" class="btn btn-secondary .btn-{color} mdi mdi-download">&nbspNote</td>
+                                          <td>
+                                            @if($atten->attend->meetingLink !=NULL)
+                                            <a href ='{{$atten->attend->meetingLink}}' target="_blank"><button type="button" class="btn btn-secondary .btn-{color}">Join Meeting</td>
+                                            @endif
                                       </tr>
                                       @endforeach
                                   </tbody>
                                 </table>
                                 
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    <!-- attendance -->
-                    <div class="tab-pane fade" id="sales" role="tabpanel" aria-labelledby="sales-tab">
-                      <div class="row">
-                        <div class="col-md-12 stretch-card">
-                          <div class="card">
-                            <div class="card-body">
-                              <li class="nav-item nav-search d-none d-lg-block w-100">
-                                <div class="input-group">
-                                  <div class="input-group-prepend">
-                                    <span class="input-group-text" id="search">
-                                      <i class="mdi mdi-magnify"></i>
-                                    </span>
-                                  </div>
-                                    <input type="text" class="form-control" placeholder="Search now" aria-label="search" aria-describedby="search">
-                                </div>
-                              </li>
-                              <br>
-                              <div class="table-responsive">
-                                <table id="" class="table">
-                                  <thead>
-                                    <tr>
-                                        <th>No.</th>
-                                        <th>Date</th>
-                                        <th>Time</th>
-                                        <th>Notice</th>   
-                                    </tr>
-                                  </thead>
-                                  <tbody>
-                                  </tbody>
-                                </table>
-                                </div>
                               </div>
                             </div>
                           </div>

@@ -24,8 +24,7 @@
     <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
       <div class="navbar-brand-wrapper d-flex justify-content-center">
         <div class="navbar-brand-inner-wrapper d-flex justify-content-between align-items-center w-100">  
-          <a class="navbar-brand brand-logo" href="../../index.html"><img src="{{asset ('template/images/logo.svg') }}" alt="logo"/></a>
-          <a class="navbar-brand brand-logo-mini" href="../../index.html"><img src="{{asset ('template/images/logo-mini.svg') }}" alt="logo"/></a>
+        <a href="/redirect"><img src="{{asset ('template/images/Abqariy.png') }}" width="100" height="55" alt="logo"/></a>
           <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
             <span class="mdi mdi-sort-variant"></span>
           </button>
@@ -40,7 +39,6 @@
           </li>
           <li class="nav-item nav-profile dropdown">
             <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" id="profileDropdown">
-              <img src="{{asset ('template/images/faces/face5.jpg') }}" alt="profile"/>
               <span class="nav-profile-name">{{Auth::user()->name}}</span>
             </a>
             <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
@@ -93,7 +91,7 @@
                   @csrf
                     <div class="form-group">
                       <label for="exampleInputName1"> Group Name</label>
-                      <input type="text" class="form-control" name="groupName"  placeholder="Group Name">
+                      <input type="text" class="form-control" name="groupName"  placeholder="Group Name" required>
                     </div>
                     <div class="form-group">
                       <label for="exampleInputEmail3">Group creator</label>
@@ -101,12 +99,12 @@
                     </div>
                     <div class="form-group">
                       <label for="exampleInputPassword4">Group Description</label>
-                      <input type="text" class="form-control" name="groupDesc" id="exampleInputPassword4" placeholder="Group Description">
+                      <input type="text" class="form-control" name="groupDesc" id="exampleInputPassword4" placeholder="Group Description" required>
                     </div>
                    
                     
                     <button type="submit" class="btn btn-primary me-2" value="{{Auth::user()->id}}">Submit</button>
-                    <button class="btn btn-light">Cancel</button>
+                    <button type="button" onclick="window.location='/redirect';return false;"class="btn btn-light" href="/redirect">Cancel</button>
                   </form>
                 </div>
               </div>

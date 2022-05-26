@@ -77,9 +77,35 @@ class creatorControl extends Controller
         $creator=Group::where('id', $id)->get();
         $user= User::with('grp')->get();
         $gid=$id;
-       
+        $attend=Attendance::with('attend')
+        ->where('userID',Auth::user()->id)
+        ->where('groupID', $id)
+        ->get();
         $meet=Meeting::where('groupID', $id)->get();
-        return view("creator.group.groupdetails",['approve'=>$approve,'group'=>$group,'creator'=>$creator,'user'=>$user,'gid'=>$gid,'meet'=>$meet,'users'=>$users]);
+
+        $count=Group::with('creators')->select('id')->where('id',$id)->first();
+        $meeting = Meeting::where('groupID',$id)->count();
+        $attendance=Attendance::where('groupID',$id)->where('userAttendance','=','1')->get();
+        
+       return view("creator.group.groupdetails",['attend'=>$attend,'approve'=>$approve,'group'=>$group,'creator'=>$creator,'user'=>$user,'gid'=>$gid,'meet'=>$meet,'users'=>$users,'meeting'=>$meeting,'attendance'=>$attendance]);
+    }
+
+    public function kickMember($id)
+    {
+        $data = User::findOrFail($id);
+        $data->find($id)->request()->detach();
+        return back();
+    }
+
+    
+
+    public function editAttendance(Request $req)
+    {
+        $data = Attendance::find($req->id);
+        $data->userAttendance = $req->userAttendance;
+        $data->save();
+
+       return back();
     }
     public function editGroup(Request $req)
     {
@@ -91,26 +117,6 @@ class creatorControl extends Controller
        return redirect('redirect');
     }
 
-    public function delete($userid,$groupid)
-    {
-        $user = User::find($userid)->grp()->findOrFail($groupid);
-        $user->detach();
-        
-        return back()->with('success', 'User Deleted successfully');
-    }
-    public function restore($id)
-    {
-        User::withTrashed()->find($id)->restore();
-
-        return back()->with('success', 'User Restore successfully');
-    }
-
-    public function restore_all()
-    {
-        User::onlyTrashed()->restore();
-
-        return back()->with('success', 'All User Restored successfully');
-    }
 
     public function approveMem($userid,$groupid)
     {
@@ -120,11 +126,10 @@ class creatorControl extends Controller
         $data->save();
 
         $user = User::find($userid);
-        $group->creators()->attach($user);
+        $user->request()->attach($group);
 
-        $s = DB::table("joins")->where("userID",$userid)->where("groupID",$groupid)->update([
-            "userApprove"=>"1"
-        ]);
+        $s = DB::table("joins")->where("userID",$userid)->where("groupID",$groupid)->delete();
+
         $member= User::with('grp')->get();
         Mail::send('approveEmail', array(
             'groupName' => $group->groupName,
@@ -133,7 +138,7 @@ class creatorControl extends Controller
             $message->to($data->email)->subject('Request Group Succesful');
         });
 
-        return redirect('redirect');
+        return back();
     }
 
     public function rejectMem($id,$groupid)
@@ -149,21 +154,22 @@ class creatorControl extends Controller
             $message->from('abqariy2022@gmail.com');
             $message->to($data->email)->subject('Request Group Unsuccesful');
         });
-        return redirect('redirect');
+        return back();
     }
 
     public function newSession($id)
     {
         $meet=Group::where('id', $id)->get();
+        $users=Group::find($id);
 
-        return view("creator.meeting.newmeeting",['meet'=>$meet]);
+        return view("creator.meeting.newmeeting",['meet'=>$meet,'users'=>$users]);
 
     }
 
     public function addsession(Request $req)
     {
-        $data = new Meeting;
 
+        $data = new Meeting;
         $data->groupID = $req->groupID;
         $data->meetingDate = $req->meetingDate;
         $data->meetingTime = $req->meetingTime;
@@ -174,35 +180,47 @@ class creatorControl extends Controller
         $filename = time().'.'.$file->getClientOriginalExtension();
         $req->meetingNotes->move('assets/file',$filename);
         $data->meetingNotes=$filename;
-        
         $data->save();
 
          $group = Group::find($req->groupID);
-        // foreach($group->creators as $creator)
-        // {
-        // Mail::send('newmeetingEmail', array(
-        //     'groupName' => $req->groupName,
-        //     'meetingDate' => $req->meetingDate,
-        //     'meetingTime' => $req->meetingTime,
-        //     'meetingDesc' => $req->meetingDesc,
-        //     'meetingLink' => $req->meetingLink,
-        //     'meetingModerator' => $req->meetingModerator,
-        // ), function($message) use ($creator){
-        //     $message->from('abqariy2022@gmail.com');
-        //     $message->to($creator->email)->subject('Tadabbur session');
-        // });
-        // }
+        foreach($group->members as $creator)
+        {
+        Mail::send('newmeetingEmail', array(
+            'groupName' => $req->groupName,
+            'meetingDate' => $req->meetingDate,
+            'meetingTime' => $req->meetingTime,
+            'meetingDesc' => $req->meetingDesc,
+            'meetingLink' => $req->meetingLink,
+            'meetingModerator' =>  $req->meetingModerator,
+        ), function($message) use ($creator){
+            $message->from('abqariy2022@gmail.com');
+            $message->to($creator->email)->subject('Tadabbur session');
+        });
+        }
+
+        $group = Group::find($req->groupID);
         foreach($group->creators as $creator)
         {
         $attend = new Attendance();
         $attend->userID = $creator->id;
         $attend->groupID = $req->groupID;
         $attend->meetingID = $data->id;
-        $attend->userFeedback = NULL;
-        $attend->userAttendance = 'Not Attend';
+        $attend->userAttendance = '2';
         $attend->save();
         }
-        return redirect('redirect');
+
+        $group = Group::find($req->groupID);
+        foreach($group->members as $member)
+        {
+        $attend = new Attendance();
+        $attend->userID = $member->id;
+        $attend->groupID = $req->groupID;
+        $attend->meetingID = $data->id;
+        $attend->userAttendance = '2';
+        $attend->save();
+        }
+
+        return back();
     }
 
     public function detailsMeeting($id)
@@ -210,7 +228,9 @@ class creatorControl extends Controller
        
         $meeting=Meeting::find($id);
         $user = Attendance::with('member')->where('meetingID',$id)->get();
-        return view("creator.meeting.meetingdetails",['meeting'=>$meeting,'user'=>$user]);
+        $users=Group::find($meeting->groupID);
+     
+        return view("creator.meeting.meetingdetails",['meeting'=>$meeting,'user'=>$user,'users'=>$users]);
     }
 
     public function editMeeting(Request $req)
@@ -221,13 +241,31 @@ class creatorControl extends Controller
         $data->meetingDesc = $req->meetingDesc;
         $data->meetingModerator = $req->meetingModerator;
         $data->meetingLink = $req->meetingLink;
+        
+        $data->save();
+
+        $group = Group::find($req->groupID);
+        
+        return back();
+    }
+
+    public function deleteSession($id)
+    {
+        $data=Meeting::find($id);
+        $data->delete();
+        return back()->with('success', 'Session Deleted successfully');
+    }
+    public function uploadNewnote(Request $req)
+    {
+        $data = Meeting::find($req->id);
         $file = $req->meetingNotes;
         $filename = time().'.'.$file->getClientOriginalExtension();
         $req->meetingNotes->move('assets/file',$filename);
         $data->meetingNotes=$filename;
         $data->save();
+      
 
-       return redirect('redirect');
+       return back();
     }
 
     public function download(Request $req,$file)

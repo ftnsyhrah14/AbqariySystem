@@ -26,8 +26,7 @@
     <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
       <div class="navbar-brand-wrapper d-flex justify-content-center">
         <div class="navbar-brand-inner-wrapper d-flex justify-content-between align-items-center w-100">  
-          <a class="navbar-brand brand-logo" href="index.html"><img src="{{asset ('template/images/logo.svg') }}" alt="logo"/></a>
-          <a class="navbar-brand brand-logo-mini" href="index.html"><img src="{{asset ('template/images/logo-mini.svg') }}" alt="logo"/></a>
+        <a href="/redirect"><img src="{{asset ('template/images/Abqariy.png') }}" width="100" height="55" alt="logo"/></a>
           <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
             <span class="mdi mdi-sort-variant"></span>
           </button>
@@ -40,7 +39,6 @@
         <ul class="navbar-nav navbar-nav-right">
           <li class="nav-item nav-profile dropdown">
             <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" id="profileDropdown">
-              <img src="template/images/faces/face5.jpg" alt="profile"/>
               <span class="nav-profile-name">{{Auth::user()->name}}</span>
             </a>
             <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
@@ -92,7 +90,7 @@
               <div class="d-flex justify-content-between flex-wrap">
                 <div class="d-flex align-items-end flex-wrap">
                   <div class="me-md-3 me-xl-5">
-                    <h2>Welcome back, Admin</h2>
+                    <h2>Welcome back, {{Auth::user()->name}}</h2>
                   </div>
                   
                 </div>
@@ -150,6 +148,83 @@
               </div>
             </div>
           </div>
+          <div class="row">
+            <div class="col-md-12 grid-margin stretch-card">
+              <div class="card">
+                <div class="card-body dashboard-tabs p-0">
+                  <ul class="nav nav-tabs px-4" role="tablist">
+                    <li class="nav-item">
+                      <a class="nav-link active" id="overview-tab" data-bs-toggle="tab" href="#overview" role="tab" aria-controls="overview" aria-selected="true">Percentage Calculation</a>
+                    </li>
+                  </ul>
+                  <div class="tab-content py-0 px-0">
+                    <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview-tab">
+                      <div class="d-flex flex-wrap justify-content-xl-between">
+                       
+                        <div class="d-flex border-md-right flex-grow-1 align-items-center justify-content-center p-3 item">
+                          <div class="row report-inner-cards-wrapper">
+                            <div class=" col-md -6 col-xl report-inner-card">
+                              <div class="inner-card-text"> 
+                                <label><b>Target Users</b></label>
+                               
+                                <input name="tot_pin_requested" class="form-control form-control-sm" onchange="calculateUser(this.value)" required>
+		                            <br><br>
+                                <label><b>Current percentage (%)</b></label>
+                                <input class="form-control form-control-sm" name="user" id="user" type="text" readonly>
+                              </div>    
+                            </div>
+                          </div>
+                        </div>
+                        <div class="d-flex border-md-right flex-grow-1 align-items-center justify-content-center p-3 item">
+                        <div class="row report-inner-cards-wrapper">
+                            <div class=" col-md -6 col-xl report-inner-card">
+                              <div class="inner-card-text"> 
+                                <label><b>Target Creators</b></label>
+                               
+                                <input name="tot_pin_requested" class="form-control form-control-sm" onchange="calculateCreator(this.value)" required>
+		                            <br><br>
+                                <label><b>Current percentage (%)</b></label>
+                                <input class="form-control form-control-sm" name="creator" id="creator" type="text" readonly>
+                              </div>    
+                            </div>
+                          </div>
+                        </div>
+                        <div class="d-flex border-md-right flex-grow-1 align-items-center justify-content-center p-3 item">
+                        <div class="row report-inner-cards-wrapper">
+                            <div class=" col-md -6 col-xl report-inner-card">
+                              <div class="inner-card-text"> 
+                                <label><b>Target Members</b></label>
+                               
+                                <input name="tot_pin_requested" class="form-control form-control-sm" onchange="calculateMember(this.value)" required>
+		                            <br><br>
+                                <label><b>Current percentage (%)</b></label>
+                                <input class="form-control form-control-sm" name="member" id="member" type="text" readonly>
+                              </div>    
+                            </div>
+                          </div>
+                        </div>
+                        <div class="d-flex py-3 border-md-right flex-grow-1 align-items-center justify-content-center p-3 item">
+                        <div class="row report-inner-cards-wrapper">
+                            <div class=" col-md -6 col-xl report-inner-card">
+                              <div class="inner-card-text"> 
+                                <label><b>Target Groups</b></label>
+                               
+                                <input name="tot_pin_requested" class="form-control form-control-sm" onchange="calculateGroup(this.value)" required>
+		                            <br><br>
+                                <label><b>Current percentage (%)</b></label>
+                                <input class="form-control form-control-sm" name="group" id="group" type="text" readonly>
+                              </div>    
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
           <br>
           <div class="row">
             
@@ -170,7 +245,42 @@
     <!-- page-body-wrapper ends -->
   </div>
   <!-- container-scroller -->
-
+  <script>
+            function calculateUser(val) {
+              var msg = "{{$total}}";
+                var tot_price = ((msg/val) * 100).toFixed(2);
+                /display the result/
+                var divobj = document.getElementById('user');
+                divobj.value = tot_price;
+            }
+        </script>
+         <script>
+            function calculateCreator(val) {
+              var msg = "{{$creator}}";
+                var tot_price = ((msg/val) * 100).toFixed(2);
+                /display the result/
+                var divobj = document.getElementById('creator');
+                divobj.value = tot_price;
+            }
+        </script>
+         <script>
+            function calculateMember(val) {
+              var msg = "{{$participant}}";
+                var tot_price = ((msg/val) * 100).toFixed(2);
+                /display the result/
+                var divobj = document.getElementById('member');
+                divobj.value = tot_price;
+            }
+        </script>
+         <script>
+            function calculateGroup(val) {
+              var msg = "{{$group}}";
+                var tot_price = ((msg/val) * 100).toFixed(2);
+                /display the result/
+                var divobj = document.getElementById('group');
+                divobj.value = tot_price;
+            }
+        </script>
   <!-- plugins:js -->
   <script src="{{asset ('template/vendors/base/vendor.bundle.base.js') }}"></script>
   <!-- endinject -->

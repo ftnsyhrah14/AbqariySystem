@@ -30,8 +30,7 @@
     <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
       <div class="navbar-brand-wrapper d-flex justify-content-center">
         <div class="navbar-brand-inner-wrapper d-flex justify-content-between align-items-center w-100">  
-          <a class="navbar-brand brand-logo" href="index.html"><img src="{{asset ('template/images/logo.svg') }}" alt="logo"/></a>
-          <a class="navbar-brand brand-logo-mini" href="index.html"><img src="{{asset ('template/images/logo-mini.svg') }}" alt="logo"/></a>
+        <a href="/redirect"><img src="{{asset ('template/images/Abqariy.png') }}" width="100" height="55" alt="logo"/></a>
           <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
             <span class="mdi mdi-sort-variant"></span>
           </button>
@@ -44,7 +43,6 @@
         <ul class="navbar-nav navbar-nav-right">
           <li class="nav-item nav-profile dropdown">
             <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" id="profileDropdown">
-              <img src="template/images/faces/face5.jpg" alt="profile"/>
               <span class="nav-profile-name">{{Auth::user()->name}}</span>
             </a>
             <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
@@ -133,8 +131,8 @@
                     <table id="" class="table">
                       <thead>
                         <tr>
-                            <th>No.</th>
                             <th>Name</th>
+                            <th>Email</th>
                             <th>Group</th>
                             <th></th>
                             <th></th>
@@ -144,10 +142,10 @@
                         @foreach($user as $user)
                         @if($user->role == '3')  
                         <tr>
-                            <td>{{$loop->iteration}}</td>
                             <td>{{$user->name}}</td>
+                            <td>{{$user->email}}</td>
                             <td>
-                            @foreach($user->grp as $group)
+                            @foreach($user->request as $group)
                             <ul>
                             <li>{{$group->groupName}}</li>
                             </ul> 

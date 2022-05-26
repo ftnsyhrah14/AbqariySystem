@@ -18,7 +18,6 @@ return new class extends Migration
             $table->foreignId('userID')->constrained('users');
             $table->string('groupName');
             $table->string('groupDesc');
-            $table->string('groupLink')->nullable();
             $table->timestamps();
         });
     }

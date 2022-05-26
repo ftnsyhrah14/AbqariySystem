@@ -6,12 +6,13 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Group;
 use DB;
+use Carbon;
 
 class adminControl extends Controller
 {
     public function creatorList(Request $request)
     {
-        $user=User::with('grp')->get();
+        $user=User::paginate(10);
         if($request->has('view_deleted'))
         {
             $user = User::onlyTrashed()->get();
@@ -45,7 +46,7 @@ class adminControl extends Controller
 
     public function memberList(Request $request)
     {
-        $user=User::with('grp')->get();
+        $user=User::with('request')->get();
         if($request->has('view_deleted'))
         {
             $user = User::onlyTrashed()->get();
@@ -82,6 +83,7 @@ class adminControl extends Controller
     public function delete($id)
     {
         User::find($id)->delete();
+
 
         return back()->with('success', 'User Deleted successfully');
     }
